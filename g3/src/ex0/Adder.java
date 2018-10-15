@@ -1,4 +1,6 @@
-package ex3;
+package ex0;
+
+import java.util.Arrays;
 
 @SuppressWarnings("Duplicates")
 public class Adder implements Runnable {
@@ -13,12 +15,8 @@ public class Adder implements Runnable {
         int slots = b.slots();
         int sum, i, tries;
         for(tries = 0; tries < 1000000; tries++){
-            sum = 0;
-            synchronized(b){
-                for(i = 0; i < slots; i++){
-                    sum += b.query(i);
-                }
-            }
+            int[] accounts = b.getAccounts();
+            sum = Arrays.stream(accounts).sum();
             if(sum != 0) System.out.println("Total " + sum);
         }
     }

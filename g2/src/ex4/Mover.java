@@ -1,4 +1,4 @@
-package ex3;
+package ex4;
 
 import java.util.Random;
 
@@ -17,9 +17,8 @@ public class Mover implements Runnable {
         int f, t, tries;
         for(tries = 0; tries < 1000000; tries++){
             f = rand.nextInt(slots); // get one
-            do{
-                t = rand.nextInt(slots);
-            }while(t == f);
+            do t = rand.nextInt(slots);
+            while(t == f);
             b.transfer(f, t, 10);
         }
     }
