@@ -5,15 +5,15 @@ public class Client implements Runnable{
     private int id;
     private Bank bank;
 
-    public String color(){
+    private String color(){
         return new String[]{"\033[31m", "\033[32m"}[id % 2 == 0 ? 0 : 1];
     }
 
-    public String clearColor(){
+    private String clearColor(){
         return "\033[0m";
     }
 
-    public Client(int id, Bank bank){
+    Client(int id, Bank bank){
         this.id = id;
         this.bank = bank;
     }

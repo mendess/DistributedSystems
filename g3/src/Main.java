@@ -1,4 +1,6 @@
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Main {
 
@@ -12,10 +14,16 @@ public class Main {
         t2.start();
         System.out.println("cenas");
         for(int i = 0; i < 100; i++){
-            bank.totalBalance(new int[]{0,1});
+            bank.totalBalance(new int[]{0, 1});
         }
         t1.join();
         t2.join();
         System.out.println(Arrays.toString(bank.totalBalance(new int[]{0, 1})));
+
+
+    }
+
+    public int suma(List<Integer> l){
+        return l.stream().mapToInt(aL -> aL).sum();
     }
 }
