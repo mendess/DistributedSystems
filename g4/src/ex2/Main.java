@@ -5,7 +5,6 @@ import ex1.Consumer;
 import ex1.Producer;
 import utils.Value;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -53,6 +52,10 @@ public class Main {
         System.out.println("Best Record: " + records.get(0));
     }
 
+    /*
+     * Creates a monitor that prints the state of all consumers and producers and of the BoundedBuffer
+     * Not needed for the correction of the program.
+     */
     private static Thread startMonitor(List<Consumer> consumers, List<Producer> producers, BoundedBuffer buff){
         Thread clear = new Thread(() -> {
             while(true){
@@ -86,11 +89,9 @@ public class Main {
         Value[] r = new Value[size];
         if(100 % size == 0){
             for(int i = 0; i < size; i++) r[i] = new Value(100 / size);
-            assert Arrays.stream(r).mapToInt(Value::getValues).sum() == 100;
         }else{
             for(int i = 0; i < size - 1; i++) r[i] = new Value(100 / size);
             r[size - 1] = new Value(100 / size + 100 % size);
-            assert Arrays.stream(r).mapToInt(Value::getValues).sum() == 100;
         }
         return r;
     }

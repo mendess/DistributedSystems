@@ -5,17 +5,20 @@ import java.util.stream.IntStream;
 public class Main {
 
     public static void main(String[] args){
-        Barrier b = new Barrier(2);
+        Barrier b = new Barrier(5);
         Runnable r = () -> {
-            b.hit();
-            System.out.println("lmao" + Thread.currentThread().getName());
-        };
-        IntStream.range(0, 4).forEach(i -> {
-            new Thread(r).start();
             try{
-                Thread.sleep(1000);
+                b.hit();
             }catch(InterruptedException ignored){
             }
+            System.out.println(Thread.currentThread().getName() + " passed barrier");
+        };
+        IntStream.range(0, 10).forEach(i -> {
+            new Thread(r).start();
+            /*try{
+                Thread.sleep(1000);
+            }catch(InterruptedException ignored){
+            }*/
         });
     }
 

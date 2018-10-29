@@ -4,25 +4,25 @@ public class Barrier {
 
     private int maxStrength;
     private int remainingStrength;
-    private boolean down;
+    private int round;
 
     public Barrier(int strength){
-        this.down = false;
+        this.round = 0;
         this.maxStrength = this.remainingStrength = strength;
     }
 
-    public synchronized void hit(){
+    public synchronized void hit() throws InterruptedException{
         this.remainingStrength--;
-        down = this.remainingStrength <= 0;
-        while(!down){
-            try{
-                System.out.println("Waiting: " + Thread.currentThread().getName());
-                this.wait();
-            }catch(InterruptedException ignored){
-            }
+        int myRound = this.round;
+        if(this.remainingStrength <= 0){
+            this.remainingStrength = this.maxStrength;
+            this.round++;
+            System.out.println(Thread.currentThread().getName() + " notifying");
+            this.notifyAll();
         }
-        this.notifyAll();
-        this.remainingStrength = this.maxStrength;
+        while(this.round == myRound){
+                System.out.println(Thread.currentThread().getName() + " waiting");
+                this.wait();
+        }
     }
-
 }
