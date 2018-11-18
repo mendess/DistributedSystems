@@ -1,6 +1,5 @@
 package ex1;
 
-import java.util.Random;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -34,7 +33,7 @@ public class BoundedBuffer {
     private void signals(){
         if(this.size == this.buff.length){
             this.gets.signal();
-        } else if (this.size == 0){
+        }else if(this.size == 0){
             this.puts.signal();
         }else{
             this.puts.signal();
@@ -47,7 +46,7 @@ public class BoundedBuffer {
         while(this.size == 0){
             this.gets.await();
         }
-        int v = this.buff[--this.size];
+        int v = this.buff[-- this.size];
         //signals();
         this.puts.signal();
         this.lock.unlock();

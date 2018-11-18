@@ -6,23 +6,23 @@ import java.util.stream.IntStream;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args){
         RWLock rwLock = new RWLock();
         Value v = new Value();
         Runnable reader = () -> {
             rwLock.readLock();
-            try {
-                Thread.sleep(200);
-            } catch (InterruptedException ignored) {
+            try{
+                Thread.sleep(2000);
+            }catch(InterruptedException ignored){
             }
             System.out.println("\033[32mReading: \033[0m" + v.getV());
             rwLock.readUnLock();
         };
         Runnable writing = () -> {
             rwLock.writeLock();
-            try {
+            try{
                 Thread.sleep(100);
-            } catch (InterruptedException ignored) {
+            }catch(InterruptedException ignored){
             }
             System.out.println("\033[31mWriting: \033[0m" + v.incrV());
             rwLock.writeUnlock();
@@ -35,22 +35,23 @@ public class Main {
         );
         thread.forEach(Thread::start);
         thread.forEach(t -> {
-            try {
+            try{
                 t.join();
-            } catch (InterruptedException ignored) {
+            }catch(InterruptedException ignored){
             }
         });
     }
 
     private static class Value {
+
         private int v;
 
-        private int getV() {
+        private int getV(){
             return v;
         }
 
-        private int incrV() {
-            return ++v;
+        private int incrV(){
+            return ++ v;
         }
     }
 }

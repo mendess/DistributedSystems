@@ -2,7 +2,7 @@ package ex1;
 
 import utils.Value;
 
-public class Consumer implements Runnable{
+public class Consumer implements Runnable {
 
     private final BoundedBuffer buff;
     private Value consumption;

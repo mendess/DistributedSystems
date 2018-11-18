@@ -1,6 +1,7 @@
 package utils;
 
 public class Value {
+
     private int values;
 
     public Value(int values){

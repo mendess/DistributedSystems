@@ -9,7 +9,7 @@ public class Main {
         w.supply("c", 3);
         System.out.println(w);
         Thread t1 = new Thread(() -> w.consume(new String[]{"a"}));
-        Thread t2 = new Thread(() -> w.consume(new String[]{"b","c"}));
+        Thread t2 = new Thread(() -> w.consume(new String[]{"b", "c"}));
         t1.start();
         t2.start();
         t1.join();

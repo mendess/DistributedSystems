@@ -37,8 +37,8 @@ public class Warehouse {
     @Override
     public String toString(){
         return "Warehouse{" +
-               "items=" + items
-               + '}';
+                "items=" + items
+                + '}';
     }
 
     private class Item {
@@ -78,7 +78,7 @@ public class Warehouse {
 
         @Override
         public String toString(){
-            return "" +  amount;
+            return "" + amount;
         }
     }
 }
