@@ -31,7 +31,10 @@ public class RWLock {
     public void readUnLock() {
         this.lock.lock();
         if (this.readers > 0) this.readers--;
-        if (!this.writing) this
+        if (!this.writing){
+            this.reader.signalAll();
+            this.writer.signalAll();
+        }
         this.lock.unlock();
     }
 
@@ -49,8 +52,8 @@ public class RWLock {
     public void writeUnlock(){
         this.lock.lock();
         this.writing = false;
-        this.reader.notifyAll();
-        this.writer.notifyAll();
+        this.reader.signalAll();
+        this.writer.signalAll();
         this.lock.unlock();
     }
 }
