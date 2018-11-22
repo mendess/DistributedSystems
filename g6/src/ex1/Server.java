@@ -12,11 +12,13 @@ public class Server {
         ServerSocket serverSocket = new ServerSocket(12345);
         String message = "";
         Socket s = serverSocket.accept();
-        while(message == null || !message.equals("quit")){
+        while(message != null && !message.equals("quit")){
             System.out.println("Reading....");
             BufferedReader buff = new BufferedReader(new InputStreamReader(s.getInputStream()));
             message = buff.readLine();
             System.out.println(message);
         }
+        s.close();
+        serverSocket.close();
     }
 }
