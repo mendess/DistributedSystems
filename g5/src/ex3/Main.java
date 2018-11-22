@@ -10,6 +10,10 @@ public class Main {
         RWLock rwLock = new RWLock();
         Value v = new Value();
         Runnable reader = () -> {
+            try{
+                Thread.sleep(10);
+            }catch(InterruptedException ignored){
+            }
             rwLock.readLock();
             try{
                 Thread.sleep(2000);
@@ -28,7 +32,7 @@ public class Main {
             rwLock.writeUnlock();
         };
         List<Thread> thread = new ArrayList<>();
-        IntStream.range(0, 15).forEach(i -> {
+        IntStream.range(0, 30).forEach(i -> {
                     thread.add(new Thread(reader));
                     thread.add(new Thread(writing));
                 }

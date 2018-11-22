@@ -10,6 +10,11 @@ public class RWLock {
     private Condition writer;
     private int readers;
     private boolean writing;
+    private final int MAX = 5;
+    private int readersPriority;
+    private int writersPriority;
+    private int readersRequest;
+    private int writersRequest;
 
     public RWLock(){
         this.lock = new ReentrantLock();
@@ -21,11 +26,18 @@ public class RWLock {
 
     public void readLock(){
         this.lock.lock();
-        this.readers++;
+        this.readersPriority++;
         try{
-            while(this.writing) this.reader.await();
+            while(this.writing || this.writersRequest > 0 && this.readersPriority >= MAX)
+                this.reader.await();
         }catch(InterruptedException ignored){
         }
+        this.readersRequest--;
+        this.readers++;
+
+        this.writersPriority = 0;
+        this.readersPriority++;
+
         this.lock.unlock();
     }
 
@@ -41,11 +53,17 @@ public class RWLock {
     public void writeLock(){
         this.lock.lock();
         try{
-            while(this.writing || this.readers > 0)
+            this.writersRequest++;
+            while(this.writing || this.readers > 0 || this.readersRequest > 0 && writersPriority >= MAX)
                 this.writer.await();
+
+            this.writersRequest--;
+            this.writing = true;
+
+            this.readersPriority = 0;
+            this.writersPriority++;
         }catch(InterruptedException ignored){
         }
-        this.writing = true;
         this.lock.unlock();
     }
 
