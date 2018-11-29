@@ -24,18 +24,22 @@ public class MultiSumServer {
         public void run(){
             try{
                 BufferedReader buff = new BufferedReader(new InputStreamReader(this.s.getInputStream()));
+                PrintWriter pr = new PrintWriter(new OutputStreamWriter(this.s.getOutputStream()));
                 String message;
                 int sum = 0;
+                int count = 0;
                 while((message = buff.readLine()) != null){
                     try{
                         int n = Integer.parseInt(message);
                         sum += n;
+                        count++;
+                        pr.println("Sum: " + sum);
+                        pr.flush();
                     }catch(NumberFormatException e){
                         break;
                     }
                 }
-                PrintWriter pr = new PrintWriter(new OutputStreamWriter(this.s.getOutputStream()));
-                pr.println("Sum: " + sum);
+                pr.println("Avg: " + ((double) sum) / count);
                 pr.close();
                 buff.close();
                 this.s.close();

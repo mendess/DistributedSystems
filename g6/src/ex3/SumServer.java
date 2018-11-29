@@ -13,19 +13,20 @@ public class SumServer {
         BufferedWriter buffW = new BufferedWriter(new OutputStreamWriter(s.getOutputStream()));
         String message;
         int sum = 0;
+        int count = 0;
         while((message = buffR.readLine()) != null){
-            if(message.equals("quit")) break;
             int num;
             try{
                 num = Integer.parseInt(message);
             }catch(NumberFormatException e){
-                buffW.write("Error " + e.getMessage() + "\n");
-                buffW.flush();
                 break;
             }
             sum += num;
+            count++;
+            buffW.write("Sum: " + sum + "\n");
+            buffW.flush();
         }
-        buffW.write("Sum: " + sum + "\n");
+        buffW.write("Avg: " + (((double) sum) / count) + "\n");
         buffW.flush();
         buffW.close();
         buffR.close();
