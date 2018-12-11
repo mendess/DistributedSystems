@@ -9,18 +9,18 @@ public class SumClient {
     public static void main(String[] args) throws IOException{
         Socket s = new Socket("localhost", 12345);
         BufferedWriter buff = new BufferedWriter(new OutputStreamWriter(s.getOutputStream()));
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(s.getInputStream()));
         for(int i = 0; i < 10; i++){
             int n = new Random().nextInt();
-            System.out.println("Writing: " + n);
             buff.write("" + n + "\n");
             buff.flush();
+            System.out.println("$ " + n);
+            System.out.println(bufferedReader.readLine());
         }
         buff.write("quit\n");
         buff.flush();
 
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(s.getInputStream()));
-        String result = bufferedReader.readLine();
-        System.out.println(result);
+        System.out.println(bufferedReader.readLine());
 
         buff.close();
         bufferedReader.close();
