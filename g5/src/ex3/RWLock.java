@@ -11,10 +11,10 @@ public class RWLock {
     private int readers;
     private boolean writing;
     private final int MAX = 5;
-    private int readersPriority;
-    private int writersPriority;
-    private int readersRequest;
-    private int writersRequest;
+    private int readsSinceLastWrite;
+    private int writesSinceLastRead;
+    private int readersRequesting;
+    private int writersRequesting;
 
     public RWLock(){
         this.lock = new ReentrantLock();
@@ -26,17 +26,17 @@ public class RWLock {
 
     public void readLock(){
         this.lock.lock();
-        this.readersPriority++;
+        this.readersRequesting++;
         try{
-            while(this.writing || this.writersRequest > 0 && this.readersPriority >= MAX)
+            while(this.writing || (this.writersRequesting > 0 && this.readsSinceLastWrite >= MAX))
                 this.reader.await();
-        }catch(InterruptedException ignored){
-        }
-        this.readersRequest--;
+        }catch(InterruptedException ignored){ }
+
+        this.readersRequesting--;
         this.readers++;
 
-        this.writersPriority = 0;
-        this.readersPriority++;
+        this.writesSinceLastRead = 0;
+        this.readsSinceLastWrite++;
 
         this.lock.unlock();
     }
@@ -53,17 +53,17 @@ public class RWLock {
     public void writeLock(){
         this.lock.lock();
         try{
-            this.writersRequest++;
-            while(this.writing || this.readers > 0 || this.readersRequest > 0 && writersPriority >= MAX)
+            this.writersRequesting++;
+            while(this.writing || this.readers > 0 || (this.readersRequesting > 0 && this.writesSinceLastRead >= MAX))
                 this.writer.await();
+        }catch(InterruptedException ignored){ }
 
-            this.writersRequest--;
-            this.writing = true;
+        this.writersRequesting--;
+        this.writing = true;
 
-            this.readersPriority = 0;
-            this.writersPriority++;
-        }catch(InterruptedException ignored){
-        }
+        this.readsSinceLastWrite = 0;
+        this.writesSinceLastRead++;
+
         this.lock.unlock();
     }
 
